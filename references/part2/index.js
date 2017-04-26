@@ -18,10 +18,9 @@ io.on('connection', function(socket){
       socket.room = 'global';
       socket.join('global')
 
-      socket.emit('updateChat', {user: 'SERVER', msg: 'you have connected to global'});
-      socket.broadcast.to('global').emit('updateChat', {user: 'SERVER', msg: username + ' has connected to global'});
+      socket.emit('updateChat', {room: 'global', user: 'SERVER', msg: 'you have connected to global'});
+      socket.broadcast.to('global').emit('updateChat', {room: 'global', user: 'SERVER', msg: username + ' has connected to global'});
 
-      socket.emit('roomsUpdate', rooms, 'global');
   })
 
   socket.on('updateChat', function(message) {
@@ -47,7 +46,7 @@ io.on('connection', function(socket){
       }
       socket.join(room_id)
       socket.room = room_id
-    socket.emit('updateChat', {user: 'SERVER', msg: socket.username + ' has connected to ' + room_id});
+    socket.emit('updateChat', {room: room_id, user: 'SERVER', msg: socket.username + ' has connected to ' + room_id});
       socket.broadcast.to(room_id).emit('updateChat', {user: 'SERVER', msg: socket.username + ' has connected to ' + room_id});
       
   })

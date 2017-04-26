@@ -8,6 +8,7 @@
     </head>
     <body>
         <h1>Socket.io Part 2 Demo!</h1>
+        <h2 id="currentRoom"></h2>
         <form id="roomForm" action="">
             <input id="roomID">
             <button>Enter room id</button>
@@ -23,7 +24,6 @@
         
         <script type="text/javascript">
                 var socket = io.connect();
-                var roomId = "";
                 socket.on('connect', function() {
                     socket.emit('adduser', prompt('Enter username: '))
                 })
@@ -31,7 +31,6 @@
                 $('#roomForm').submit(function() {
                     $('#output').val("");
                     socket.emit('enterRoom', $('#roomID').val());
-                    room_id = $('#roomID').val();
                     return false;
                 })
 
@@ -40,8 +39,10 @@
                     $('#inputMsg').val("");
                     return false;
                 })
-                
+
+
                 socket.on('updateChat', function(data) {
+                    $('#currentRoom').text(data.room);
                     $('#output').append($('<li>').text(data.user +": "+ data.msg));
                 });
             

@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Socket.IO</title>
+        <script type="text/javascript" src="jquery.min.js"></script>
+        <script type="text/javascript" src="socket.io.min.js"></script>
+    </head>
+    <body>
+        <h1>Socket.io Part 1 Demo!</h1>
+        <form id="roomForm" action="">
+            <input id="roomID">
+            <button>Enter room id</button>
+        </form>
+        <div class="messagecontainer">
+            <ul id="output"></ul>
+        </div>
+        <form id="messageForm" action="">
+            <input id="inputMsg">
+            <button>Enter Message</button>
+        </form>
+        
+        
+        <script type="text/javascript">
+                var socket = io.connect();
+                var roomId = "";
+                socket.on('connect', function() {
+                    socket.emit('adduser', prompt('Enter username: '))
+                })
+
+                $('#roomForm').submit(function() {
+                    $('#output').val("");
+                    socket.emit('enterRoom', $('#roomID').val());
+                    room_id = $('#roomID').val();
+                    return false;
+                })
+
+                $('#messageForm').submit(function() {
+                    socket.emit('updateChat', $('#inputMsg').val());
+                    $('#inputMsg').val("");
+                    return false;
+                })
+                
+                socket.on('updateChat', function(data) {
+                    $('#output').append($('<li>').text(data.user +": "+ data.msg));
+                });
+            
+        </script>
+    </body>
+</html>
